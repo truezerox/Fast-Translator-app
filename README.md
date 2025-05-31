@@ -35,3 +35,13 @@ made a translation file
 made sure there was an error handling.
 added footers and i am adding more comments on my code so everyone can remake it or change it how they would like it to be.
 
+## next verion will be included.
+
+- new Light mode color scheme.
+- maybe language for the app for Dutch and English
+
+  ![ScreenShot](/screenshots/introduction_white.jpg)
+    ![ScreenShot](/screenshots/main_white.jpg)
+    ![ScreenShot](/screenshots/introduction_dark.jpg)
+    ![ScreenShot](/screenshots/main_dark.jpg)
+

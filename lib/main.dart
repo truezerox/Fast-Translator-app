@@ -1,11 +1,14 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:translator/translator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'app_footer.dart'; // here is your copywright footer widget
-
+import 'app_footer.dart'; // here is your copy wright footer widget
+import 'package:google_fonts/google_fonts.dart';
 
 // Key for saving theme preference
 const String kThemeModeKey = 'theme_mode';
@@ -42,10 +45,14 @@ class LanguageService {
             _supportedLanguages = jsonList.map((jsonItem) => Language.fromJson(jsonItem)).toList();
             // Ensure target languages are derived after supported languages are loaded
             _targetLanguages = _supportedLanguages?.where((lang) => lang.code != 'auto').toList();
-            print("Languages loaded successfully: ${_supportedLanguages?.length} languages.");
+            if (kDebugMode) {
+              print("Languages loaded successfully: ${_supportedLanguages?.length} languages.");
+            }
         }
         catch (e) {
-            print("Error loading lang.json from $_languagesAssetPath: $e");
+            if (kDebugMode) {
+              print("Error loading lang.json from $_languagesAssetPath: $e");
+            }
             // Fallback to minimal defaults on error
             _supportedLanguages = [
                 Language(code: 'auto', name: 'Auto Detect (Error)'),
@@ -114,7 +121,7 @@ class _MyTranslatorAppState extends State<MyTranslatorApp> {
             );
         }
     }
-
+    // Toggle theme mode
     void _toggleTheme() {
         setState(() {
                 _currentThemeMode = _currentThemeMode == AppThemeMode.dark
@@ -124,7 +131,7 @@ class _MyTranslatorAppState extends State<MyTranslatorApp> {
             }
         );
     }
-
+    // Save theme mode to shared preferences
     Future<void> _saveThemeMode(AppThemeMode mode) async {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString(
@@ -143,42 +150,51 @@ class _MyTranslatorAppState extends State<MyTranslatorApp> {
                 surface: Colors.grey[100]!, // Light surface for cards, dialogs
                 background: Colors.white,   // Overall background
                 onPrimary: Colors.white,    // Text on primary color
-                onSecondary: Colors.white,  // Text on secondary color
-                onSurface: Colors.black87,  // Main text color on light surfaces
+                onSecondary: Colors.orange,  // Text on secondary color
+                onSurface: Colors.black,  // Main text color of the footer and dropdown text
                 onBackground: Colors.black87, // Main text color on background
+
             ),
-            scaffoldBackgroundColor: Colors.white,
+            //introduction colors
+            scaffoldBackgroundColor: Color(0xFFC5E8E4), //body background color
             appBarTheme: AppBarTheme(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white, // Text/icons on AppBar
+                backgroundColor: Color(0xFF2F8BF5), // background color AppBar
+                foregroundColor: Colors.black, // Text/icons color AppBar
                 elevation: 2,
+
             ),
-            textTheme: TextTheme( // Define text styles for light theme
-                bodyLarge: TextStyle(color: Colors.black87),
-                bodyMedium: TextStyle(color: Colors.black54),
-                headlineSmall: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                titleMedium: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-                labelLarge: TextStyle(color: Colors.black54), // For button labels, etc.
+
+            // Define text styles for light theme
+            textTheme: TextTheme(
+                bodyLarge: TextStyle(color: Colors.black), //text for translation color (text area) main page.
+                bodyMedium: TextStyle(color: Colors.black), //text color paragraph (sub-text) of the introduction page.
+                headlineSmall: TextStyle(color: Colors.black, fontWeight: FontWeight.bold), //Header text of the introduction page.
+                titleMedium: TextStyle(color: Colors.black, fontWeight: FontWeight.w700), // text color small translation text above the translation box.
+                labelLarge: TextStyle(color: Color(0xFF2FF59D)), // For button labels, etc.(color when you select something border edges etc)
                 bodySmall: TextStyle(color: Colors.black54.withOpacity(0.7)) // For footer text
             ),
+
             inputDecorationTheme: InputDecorationTheme(
-                labelStyle: TextStyle(color: Colors.black54),
-                hintStyle: TextStyle(color: Colors.grey[400]),
+                labelStyle: TextStyle(color: Colors.black), // border color of the dropdown menu`s label
+                hintStyle: TextStyle(color: Colors.grey[400]), // text of the main page text input field (enter text to translate).
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide(color: Colors.grey[400]!),
                 ),
+
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(color: Colors.red, width: 2.0),
+                    borderSide: BorderSide(color: Colors.pink, width: 2.0), // border color of the main page border of the main input field and 2x dropdown menu`s (enter text to translate).
                 ),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(color: Colors.grey[400]!),
+                    borderSide: BorderSide(color: Colors.pink[400]!), // border color of the main page border of the main input field and 2x dropdown menu`s (enter text to translate).
                 ),
                 filled: true,
-                fillColor: Colors.grey[200],
+                fillColor: Colors.grey[200], // background color of the input text field (enter text to translate).
             ),
+
+            // color of the buttons.
             elevatedButtonTheme: ElevatedButtonThemeData(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
@@ -190,6 +206,7 @@ class _MyTranslatorAppState extends State<MyTranslatorApp> {
                     ),
                 ),
             ),
+
             popupMenuTheme: PopupMenuThemeData( // For dropdown menus
                 textStyle: TextStyle(color: Colors.black87), // Text color for dropdown items
                 color: Colors.grey[50], // Background color of dropdown menu
@@ -213,6 +230,7 @@ class _MyTranslatorAppState extends State<MyTranslatorApp> {
                 onSurface: Colors.orange,      //text color of the dropdown menu`s
                 onBackground: Colors.white,   //
             ),
+
             scaffoldBackgroundColor: Colors.grey[900],
             appBarTheme: AppBarTheme(
                 backgroundColor: Colors.black, // Dark AppBar
@@ -269,6 +287,7 @@ class _MyTranslatorAppState extends State<MyTranslatorApp> {
         return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Fast Translator', // app title
+            // Use Google Fonts
             theme: lightTheme, // Apply light theme
             darkTheme: darkTheme, // Apply dark theme
             themeMode: _currentThemeMode == AppThemeMode.light
@@ -299,7 +318,8 @@ class IntroductionPage extends StatelessWidget {
 
         return Scaffold(
             appBar: AppBar(
-                title: const Text('Free Translator App'),
+                title: const Text('Fast translator app'),
+                centerTitle: true,
                 actions: [
                     IconButton(
                         icon: Icon(themeMode == AppThemeMode.dark
@@ -359,14 +379,21 @@ class IntroductionPage extends StatelessWidget {
                                 const SizedBox(height: 30),
                                 Text(
                                     'Fast Translator App', //main text
-                                    style: textTheme.headlineSmall,
-                                    textAlign: TextAlign.center,
+                                    // adding google fonts to the text
+                                    style: GoogleFonts.lato(
+                                        textStyle: Theme.of(context).textTheme.headlineSmall,
+                                        fontSize: 25.0,
+                                        fontStyle: FontStyle.italic,
+
+                                    ),
                                 ),
                                 const SizedBox(height: 15),
                                 Text(
                                     'Your free go-to translation tool for seamless language conversions.',//sub text
-                                    style: textTheme.bodyLarge
-                                        ?.copyWith(color: textTheme.bodyMedium?.color),
+                                    style: GoogleFonts.adventPro(
+                                        textStyle: Theme.of(context).textTheme.bodyLarge,
+                                        fontSize: 15.0,
+                                        fontStyle: FontStyle.italic,),
                                     textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 40),
@@ -382,7 +409,9 @@ class IntroductionPage extends StatelessWidget {
                                                 )),
                                         );
                                     },
-                                    child: const Text('Lets Translate'),
+                                    child: const Text(
+                                        'Lets Translate'
+                                    ),
                                 ),
                                 SizedBox(height: MediaQuery.of(context).size.height * 0.05), // Add some bottom spacing
                                 const AppFooter(),//add the footer widget
@@ -481,7 +510,9 @@ class _TranslationPageState extends State<TranslationPage> {
         }// error managment
 
         catch (e) {
-            print("Translation error: $e");
+            if (kDebugMode) {
+                print("Translation error: $e");
+            }
             if (mounted) {
                 setState(() {
                         _translatedText =
@@ -523,6 +554,7 @@ class _TranslationPageState extends State<TranslationPage> {
         return Scaffold(
             appBar: AppBar(
                 title: const Text('Translate'),// title text
+                centerTitle: true,
                 actions: [
                     IconButton(
                         // Toggle theme button
@@ -545,7 +577,9 @@ class _TranslationPageState extends State<TranslationPage> {
                             return const Center(child: CircularProgressIndicator());
                         }
                         else if (snapshot.hasError) {
-                            print("Error in TranslationPage FutureBuilder: ${snapshot.error}");
+                            if (kDebugMode) {
+                              print("Error in TranslationPage FutureBuilder: ${snapshot.error}");
+                            }
                             return Center(child: Text('Error loading languages: ${snapshot.error}'));
                         }
                         // error managment
@@ -576,17 +610,21 @@ class _TranslationPageState extends State<TranslationPage> {
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                         Expanded(
+                                            //expand to fill the space
                                             child: DropdownButtonFormField<String>(
                                                 decoration: const InputDecoration(
-                                                    labelText: 'From',
+                                                    labelText: 'From', // dropbox label text
                                                     filled: false, // Ensure this matches your theme design
                                                 ),
                                                 // MODIFIED: Added isExpanded
                                                 isExpanded: true,
+                                                // MODIFIED: Added value
                                                 value: _sourceLanguage,
+                                                // MODIFIED: Added dropdownColor
                                                 dropdownColor: colorScheme.surface, // Use theme color
                                                 style: TextStyle(color: dropdownItemColor), // Ensure text color contrasts
                                                 items: sourceLanguages.map((lang) {
+                                                        // MODIFIED: Added DropdownMenuItem
                                                         return DropdownMenuItem(
                                                             value: lang.code,
                                                             // MODIFIED: Added TextOverflow.ellipsis
@@ -606,14 +644,16 @@ class _TranslationPageState extends State<TranslationPage> {
                                         ),
                                         // Swap button
                                         Padding(
+                                            // MODIFIED: Added padding
                                             padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                            // MODIFIED: Added Icon
                                             child: Icon(Icons.swap_horiz, color: colorScheme.onSurface),
                                         ),
                                         Expanded(
                                             //expand to fill the space
                                             child: DropdownButtonFormField<String>(
                                                 decoration: const InputDecoration(
-                                                    labelText: 'To',
+                                                    labelText: 'To',//text dropbox rightside.
                                                     filled: false,
                                                 ),
 
@@ -624,7 +664,7 @@ class _TranslationPageState extends State<TranslationPage> {
                                                 items: targetLanguages.map((lang) {
                                                         return DropdownMenuItem(
                                                             value: lang.code,
-
+                                                            //Added TextOverflow.ellipsis
                                                             child: Text(lang.name, overflow: TextOverflow.ellipsis, style: TextStyle(color: dropdownItemColor)),
                                                         );
                                                     }
@@ -647,8 +687,14 @@ class _TranslationPageState extends State<TranslationPage> {
                                     decoration: const InputDecoration(
                                         hintText: 'Enter text to translate', // Fill text for textbox
                                     ),
-                                    style: textTheme.bodyLarge
-                                        ?.copyWith(color: colorScheme.onSurface),
+
+                                    // GoogleFonts for the text style.
+                                    style: GoogleFonts.lato(
+
+                                        textStyle: textTheme.bodyLarge,
+
+                                    ),
+
                                     minLines: 3, //min lines for textbox
                                     maxLines: 5, //max lines for textbox
                                 ),

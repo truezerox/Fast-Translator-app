@@ -75,6 +75,8 @@ A Flutter-based mobile application designed for seamless and intuitive text tran
 *   Refined light theme color palette.
 *   Integrated Google Fonts for improved text presentation.
 *   Enhanced code comments for better maintainability and developer understanding.
+*   **Addressed various minor bugs and improved overall application stability.**
+*   Added a clear all button on the translation page.
 
 ### Version 0.1
 

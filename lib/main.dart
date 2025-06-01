@@ -550,6 +550,10 @@ class TranslationPage extends StatefulWidget {
 ///
 /// Manages the input text, translated text, loading state, selected languages,
 /// and handles the translation process.
+///
+// --- Translation Page ---
+
+// ... (other parts of your TranslationPage and _TranslationPageState remain the same)
 
 class _TranslationPageState extends State<TranslationPage> {
     /// Controller for the text input field.
@@ -579,16 +583,16 @@ class _TranslationPageState extends State<TranslationPage> {
 
         // After target languages are loaded, ensure the default target language is valid.
         _targetLanguagesFuture.then((langs) {
-                // Check if the widget is still mounted and languages are loaded.
-                if (mounted && langs.isNotEmpty && !langs.any((l) => l.code == _targetLanguage)) {
-                    // If the default target language ('en') is not in the list,
-                    // set the target language to the first available language.
-                    setState(() {
-                            _targetLanguage = langs.first.code;
-                        }
-                    );
+            // Check if the widget is still mounted and languages are loaded.
+            if (mounted && langs.isNotEmpty && !langs.any((l) => l.code == _targetLanguage)) {
+                // If the default target language ('en') is not in the list,
+                // set the target language to the first available language.
+                setState(() {
+                    _targetLanguage = langs.first.code;
                 }
+                );
             }
+        }
         );
     }
 
@@ -605,8 +609,8 @@ class _TranslationPageState extends State<TranslationPage> {
         if (inputText.isEmpty) {
             if (mounted) {
                 setState(() {
-                        _translatedText = '';
-                    }
+                    _translatedText = '';
+                }
                 );
             }
             return;
@@ -615,9 +619,9 @@ class _TranslationPageState extends State<TranslationPage> {
         // Set loading state to true.
         if (mounted) {
             setState(() {
-                    _isLoading = true;
-                    _translatedText = ''; // Clear previous translation.
-                }
+                _isLoading = true;
+                _translatedText = ''; // Clear previous translation.
+            }
             );
         }
 
@@ -631,8 +635,8 @@ class _TranslationPageState extends State<TranslationPage> {
             // Update UI with the translated text.
             if (mounted) {
                 setState(() {
-                        _translatedText = translation.text;
-                    }
+                    _translatedText = translation.text;
+                }
                 );
             }
         }
@@ -643,9 +647,9 @@ class _TranslationPageState extends State<TranslationPage> {
             }
             if (mounted) {
                 setState(() {
-                        _translatedText =
-                        "Error: Could not translate text.\nPlease check your internet connection or language pair.";
-                    }
+                    _translatedText =
+                    "Error: Could not translate text.\nPlease check your internet connection or language pair.";
+                }
                 );
                 // Show a SnackBar with the error message.
                 if (context.mounted) {
@@ -662,8 +666,8 @@ class _TranslationPageState extends State<TranslationPage> {
         finally {
             if (mounted) {
                 setState(() {
-                        _isLoading = false;
-                    }
+                    _isLoading = false;
+                }
                 );
             }
         }
@@ -692,8 +696,8 @@ class _TranslationPageState extends State<TranslationPage> {
                     // Theme toggle button.
                     IconButton(
                         icon: Icon(widget.themeMode == AppThemeMode.dark
-                                ? Icons.light_mode
-                                : Icons.dark_mode),
+                            ? Icons.light_mode
+                            : Icons.dark_mode),
                         onPressed: widget.onThemeChanged, // Callback to toggle theme.
                         tooltip: 'Toggle Theme',
                     ),
@@ -760,18 +764,18 @@ class _TranslationPageState extends State<TranslationPage> {
                                                 dropdownColor: colorScheme.surface, // Background color of dropdown.
                                                 style: TextStyle(color: dropdownItemColor), // Text style for items.
                                                 items: sourceLanguages.map((lang) {
-                                                        return DropdownMenuItem(
-                                                            value: lang.code,
-                                                            // Use TextOverflow.ellipsis for long language names.
-                                                            child: Text(lang.name, overflow: TextOverflow.ellipsis, style: TextStyle(color: dropdownItemColor)),
-                                                        );
-                                                    }
+                                                    return DropdownMenuItem(
+                                                        value: lang.code,
+                                                        // Use TextOverflow.ellipsis for long language names.
+                                                        child: Text(lang.name, overflow: TextOverflow.ellipsis, style: TextStyle(color: dropdownItemColor)),
+                                                    );
+                                                }
                                                 ).toList(),
                                                 onChanged: (value) {
                                                     if (value != null) {
                                                         setState(() {
-                                                                _sourceLanguage = value;
-                                                            }
+                                                            _sourceLanguage = value;
+                                                        }
                                                         );
                                                     }
                                                 },
@@ -794,17 +798,17 @@ class _TranslationPageState extends State<TranslationPage> {
                                                 dropdownColor: colorScheme.surface,
                                                 style: TextStyle(color: dropdownItemColor),
                                                 items: targetLanguages.map((lang) {
-                                                        return DropdownMenuItem(
-                                                            value: lang.code,
-                                                            child: Text(lang.name, overflow: TextOverflow.ellipsis, style: TextStyle(color: dropdownItemColor)),
-                                                        );
-                                                    }
+                                                    return DropdownMenuItem(
+                                                        value: lang.code,
+                                                        child: Text(lang.name, overflow: TextOverflow.ellipsis, style: TextStyle(color: dropdownItemColor)),
+                                                    );
+                                                }
                                                 ).toList(),
                                                 onChanged: (value) {
                                                     if (value != null) {
                                                         setState(() {
-                                                                _targetLanguage = value;
-                                                            }
+                                                            _targetLanguage = value;
+                                                        }
                                                         );
                                                     }
                                                 },
@@ -826,22 +830,51 @@ class _TranslationPageState extends State<TranslationPage> {
                                     minLines: 3, // Minimum lines for the text field.
                                     maxLines: 5, // Maximum lines for the text field.
                                 ),
-                                const SizedBox(height: 20),
+                                // START: ADDED CLEAR BUTTON
+
+                                // Clear button to clear the input and translated text.
+                                const SizedBox(height: 8), // Add some spacing
+                                Align(
+                                    alignment: Alignment.centerRight,
+                                    child: TextButton.icon(
+                                        icon: Icon(Icons.clear, color: colorScheme.secondary), // Use a color from your theme
+                                        label: Text(
+                                            'Clear',
+                                            style: TextStyle(color: colorScheme.secondary), // Use a color from your theme
+                                        ),
+                                        onPressed: () {
+                                            _inputController.clear();
+                                            // Also clear the translated text when the input is cleared
+                                            if (mounted) {
+                                                setState(() {
+                                                    _translatedText = '';
+                                                });
+                                            }
+                                        },// Clear button action
+                                        style: TextButton.styleFrom(
+                                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                        ),
+                                    ),
+                                ),
+                                // END: ADDED CLEAR BUTTON
+
+
+                                const SizedBox(height: 12), // Adjusted spacing if needed before Translate button
                                 // Translate button.
                                 ElevatedButton(
                                     // Disable button while loading.
                                     onPressed: _isLoading ? null : _translateText,
                                     child: _isLoading
-                                        // Show loading indicator inside the button.
+                                    // Show loading indicator inside the button.
                                         ? SizedBox(
-                                            height: 24,
-                                            width: 24,
-                                            child: CircularProgressIndicator(
-                                                strokeWidth: 2.5,
-                                                // Use theme color for the indicator.
-                                                valueColor: AlwaysStoppedAnimation<Color>(colorScheme.onSecondary),
-                                            ),
-                                        )
+                                        height: 24,
+                                        width: 24,
+                                        child: CircularProgressIndicator(
+                                            strokeWidth: 2.5,
+                                            // Use theme color for the indicator.
+                                            valueColor: AlwaysStoppedAnimation<Color>(colorScheme.onSecondary),
+                                        ),
+                                    )
                                         : const Text('Translate'), // Button text.
                                 ),
                                 const SizedBox(height: 20),
@@ -876,20 +909,20 @@ class _TranslationPageState extends State<TranslationPage> {
                                         // otherwise display the translated text or placeholder.
                                         child: _isLoading && _translatedText.isEmpty
                                             ? Center(
-                                                child: Text("Processing...",
-                                                    style: textTheme.bodyMedium?.copyWith(
-                                                        color: colorScheme.onSurface.withOpacity(0.7))))
-                                            // Make translated text scrollable if it's long.
+                                            child: Text("Processing...",
+                                                style: textTheme.bodyMedium?.copyWith(
+                                                    color: colorScheme.onSurface.withOpacity(0.7))))
+                                        // Make translated text scrollable if it's long.
                                             : SingleChildScrollView(
-                                                child: Text(
-                                                    _translatedText.isEmpty && !_isLoading
-                                                        ? 'Your translation will appear here.' // Placeholder.
-                                                        : _translatedText, // Translated text.
-                                                    style: textTheme.bodyLarge?.copyWith(
-                                                        fontSize: 18, // Slightly larger font for readability.
-                                                    ),
+                                            child: Text(
+                                                _translatedText.isEmpty && !_isLoading
+                                                    ? 'Your translation will appear here.' // Placeholder.
+                                                    : _translatedText, // Translated text.
+                                                style: textTheme.bodyLarge?.copyWith(
+                                                    fontSize: 18, // Slightly larger font for readability.
                                                 ),
                                             ),
+                                        ),
                                     ),
                                 ),
                             ],

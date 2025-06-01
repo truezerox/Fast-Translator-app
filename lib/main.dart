@@ -249,7 +249,7 @@ class _MyTranslatorAppState extends State<MyTranslatorApp> {
                 headlineSmall: TextStyle(color: Colors.black, fontWeight: FontWeight.bold), // For header text on the introduction page.
                 titleMedium: TextStyle(color: Colors.black, fontWeight: FontWeight.w700), // For "Translation" text above the translation box.
                 labelLarge: TextStyle(color: Color(0xFF2FF59D)), // For button labels, interactive element highlights.
-                bodySmall: TextStyle(color: Colors.black54.withOpacity(0.7)) // For footer text.
+                bodySmall: TextStyle(color: Colors.black54) // For footer text.
             ),
             // Input decoration theme for text fields and dropdowns in light theme.
             inputDecorationTheme: InputDecorationTheme(
@@ -322,7 +322,7 @@ class _MyTranslatorAppState extends State<MyTranslatorApp> {
                 headlineSmall: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),// For header text on the introduction page.
                 titleMedium: TextStyle(color: Colors.green, fontWeight: FontWeight.w600), // For "Translation" text above the translation box.
                 labelLarge: TextStyle(color: Colors.white70), // For button labels.
-                bodySmall: TextStyle(color: Colors.white70.withOpacity(0.7)) // For footer text.
+                bodySmall: TextStyle(color: Colors.white70) // For footer text.
             ),
             // Input decoration theme for text fields and dropdowns in dark theme.
             inputDecorationTheme: InputDecorationTheme(
@@ -443,8 +443,8 @@ class IntroductionPage extends StatelessWidget {
                                             // Shadow effect for the logo container.
                                             BoxShadow(
                                                 color: themeMode == AppThemeMode.dark
-                                                    ? Colors.black.withOpacity(0.3)
-                                                    : Colors.grey.withOpacity(0.5),
+                                                    ? Colors.black
+                                                    : Colors.grey,
                                                 spreadRadius: 2.5,
                                                 blurRadius: 5,
                                                 offset: const Offset(0, 3),
@@ -463,7 +463,7 @@ class IntroductionPage extends StatelessWidget {
                                                     child: Icon(
                                                         Icons.broken_image,
                                                         size: 50,
-                                                        color: colorScheme.onSurface.withOpacity(0.5),
+                                                        color: colorScheme.onSurface,
                                                     ),
                                                 );
                                             },
@@ -892,13 +892,13 @@ class _TranslationPageState extends State<TranslationPage> {
                                             color: colorScheme.surface, // Background color from theme.
                                             borderRadius: BorderRadius.circular(10),
                                             border: Border.all(
-                                                color: colorScheme.onSurface.withOpacity(0.12)),
+                                                color: colorScheme.onSurface),
                                             boxShadow: [
                                                 // Shadow effect for the translation box.
                                                 BoxShadow(
                                                     color: widget.themeMode == AppThemeMode.dark
-                                                        ? Colors.black.withOpacity(0.2)
-                                                        : Colors.grey.withOpacity(0.4),
+                                                        ? Colors.black
+                                                        : Colors.grey,
                                                     spreadRadius: 0,
                                                     blurRadius: 3,
                                                     offset: const Offset(0, 1),
@@ -911,7 +911,7 @@ class _TranslationPageState extends State<TranslationPage> {
                                             ? Center(
                                             child: Text("Processing...",
                                                 style: textTheme.bodyMedium?.copyWith(
-                                                    color: colorScheme.onSurface.withOpacity(0.7))))
+                                                    color: colorScheme.onSurface)))
                                         // Make translated text scrollable if it's long.
                                             : SingleChildScrollView(
                                             child: Text(

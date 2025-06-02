@@ -23,14 +23,14 @@ class AppFooter extends StatelessWidget {
               'assets/logo.png', // logo image
               errorBuilder: (context, error, stackTrace) {
                 // Fallback icon if logo fails to load
-                return Icon(Icons.translate, size: 20, color: colorScheme.onSurface.withOpacity(0.6));
+                return Icon(Icons.translate, size: 20, color: colorScheme.onSurface);
               },
             ),
           ),
           const SizedBox(width: 8),
           Text(
             '© $currentYear Fast Translator App. All rights reserved.', // Updated app name
-            style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurface.withOpacity(0.7)),
+            style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurface),
             textAlign: TextAlign.center,
           ),
         ],
